@@ -2617,10 +2617,9 @@ const TEMPLATES = [
 function boot() {
   store = loadStore();
   if (!store) {
-    const t = TEMPLATES[0], p = newProject(t.name);
-    p.vars = t.vars.slice();
+    const p = newProject('新しいアプリ');
     store = { projects: [p], current: p.id, settings: { comments: true } };
-    loadExt(); p.scripts = t.build(); saveNow();
+    loadExt(); saveNow();
   }
   sel = null; openCat = null;
   loadExt(); renderDev(); renderCodeSeg(); renderAll(); setView('blocks'); run();
