@@ -744,6 +744,7 @@ window.BlockKoubou = BK;
 
 /* ===== 作品データ ===== */
 const KEY = 'block-koubou-v1';
+const LEGAL_KEY = 'block-koubou-legal-v1';
 let mem = null;
 const PACKS = [
   { id: 'list', name: 'リスト', desc: '買い物リストのように、たくさんの値をまとめて扱う' },
@@ -1802,7 +1803,7 @@ function openNewName(kind, cb) {
 /* ===== メニュー ===== */
 function openMenu() {
   openSheet('メニュー', body => {
-    [['作品', '作品の切り替え・名前・複製・削除', openProjects], ['テンプレート', 'できあがったアプリから始める', openTemplates], ['拡張機能', 'ブロックの追加・自分用ブロックを作る', openExtensions], ['コピー・バックアップ', 'コードをコピー、作品を保存・取り込み', openExport], ['使い方・設定', 'はじめてガイドと設定', openHelp]].forEach(m => body.append(h('button', { class: 'item', type: 'button', onclick: m[2] }, h('span', { class: 'grow' }, h('div', { class: 't' }, m[0]), h('div', { class: 'd' }, m[1])))));
+    [['作品', '作品の切り替え・名前・複製・削除', openProjects], ['テンプレート', 'できあがったアプリから始める', openTemplates], ['拡張機能', 'ブロックの追加・自分用ブロックを作る', openExtensions], ['コピー・バックアップ', 'コードをコピー、作品を保存・取り込み', openExport], ['使い方・設定', 'はじめてガイドと設定', openHelp], ['利用規約・注意事項', '利用条件と安全上の注意を確認', openLegal], ['公式リンク・お問い合わせ', 'GitHub・Discord・公式サイト', openLinks]].forEach(m => body.append(h('button', { class: 'item', type: 'button', onclick: m[2] }, h('span', { class: 'grow' }, h('div', { class: 't' }, m[0]), h('div', { class: 'd' }, m[1])))));
   });
 }
 const fmtDate = ts => new Date(ts).toLocaleString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -1959,6 +1960,85 @@ function openHelp() {
     armButton(rst, '全作品が消えるよ。本当に？', () => { store = null; try { localStorage.removeItem(KEY); } catch (e) {} mem = null; boot(); closeSheet(); toast('初期化したよ'); });
     body.append(rst);
   });
+}
+
+
+/* ===== 利用規約・リンク ===== */
+function openLegal() {
+  openSheet('利用規約・注意事項', body => {
+    const sections = [
+      ['1. 運営者', 'ブロック工房の運営者は MakuMaku_ra です。お問い合わせはDiscordのサポートサーバーで「MakuMaku_ra」宛にお願いします。'],
+      ['2. 利用条件', '本サービスは、ブロックを組み合わせてアプリやウェブページを作成するためのツールです。利用者は、法令および第三者の権利を守り、自己の責任で利用してください。未成年の方は、必要に応じて保護者に確認してください。'],
+      ['3. 禁止事項', '違法行為、第三者への迷惑行為、権利侵害、不正アクセス、サービス運営の妨害、マルウェアや詐欺目的の作品の作成・配布を禁止します。'],
+      ['4. 作品データと保存', '作品データは利用中のブラウザのローカルストレージに保存されます。ブラウザのデータ削除、端末の変更、プライベートブラウズの利用などにより、作品が失われることがあります。必要に応じてバックアップを保存してください。運営者が作品データを自動でバックアップ・復元する機能はありません。'],
+      ['5. 外部サービス・通信', '作品内のAI、Webhook、API、フォーム、通信などのブロックを使うと、入力内容や設定したURL・データが外部サービスへ送信される場合があります。送信先の利用規約・プライバシーポリシーを確認し、パスワードや個人情報、秘密情報を不用意に入力しないでください。APIキーやWebhook URLを作品に埋め込むと、書き出したHTMLを受け取った人に見られる可能性があります。'],
+      ['6. 拡張スクリプト', '拡張スクリプトはJavaScriptを実行します。内容を理解できないコードや、信頼できない相手から受け取ったコードは登録しないでください。実行によってデータの送信・変更などが起きる可能性があります。'],
+      ['7. 免責・サービス変更', '運営者は、作品の消失、外部サービスの停止・仕様変更、利用者間または第三者とのトラブルなどについて、法令上許される範囲で責任を負いません。サービスの内容は予告なく変更・停止される場合があります。'],
+      ['8. 規約の変更', '必要に応じて本規約を変更します。重要な変更がある場合は、サイト上で案内します。変更後も利用を続けた場合、変更後の規約に同意したものとして扱います。']
+    ];
+    sections.forEach(x => body.append(h('div', { class: 'item' }, h('span', { class: 'grow' }, h('div', { class: 't' }, x[0]), h('div', { class: 'd' }, x[1])))));
+    body.append(h('div', { class: 'lab', style: 'margin-top:12px' }, 'プライバシーについて'));
+    body.append(h('p', { class: 'note' }, 'このアプリは作品データをブラウザのローカルストレージに保存します。サイトへのアクセス時には、ホスティング事業者のサーバーで通信に必要な情報やアクセスログが処理される場合があります。また、利用者が作品内で外部API等を呼び出した場合、その送信先の事業者がデータを取り扱います。運営者が個別の作品データを閲覧できるクラウド保存機能は現在提供していません。'));
+    body.append(h('p', { class: 'note' }, '制定日：2026年11月22日'));
+  });
+}
+function openLinks() {
+  openSheet('公式リンク・お問い合わせ', body => {
+    const links = [
+      ['GitHub リポジトリ', 'ソースコード・更新履歴', 'https://github.com/yajuusennpai631-dotcom/Block-Workshop'],
+      ['Discord サポート', 'MakuMaku_ra 宛のお問い合わせ', 'https://discord.gg/sdEEAbeg8'],
+      ['ブロック工房', '公式サイトを開く', 'https://block-workshop-production.up.railway.app/']
+    ];
+    links.forEach(x => {
+      const a = h('a', { class: 'item', href: x[2], target: '_blank', rel: 'noopener noreferrer', style: 'display:flex;text-decoration:none;color:inherit' }, h('span', { class: 'grow' }, h('div', { class: 't' }, x[0]), h('div', { class: 'd' }, x[1])));
+      body.append(a);
+    });
+    body.append(h('p', { class: 'note' }, 'Discordで問い合わせる際は、サポートサーバー内で MakuMaku_ra 宛であることを伝えてください。'));
+  });
+}
+function showLegalGate() {
+  if ($('#legalGate')) return;
+  const gate = h('div', { id: 'legalGate', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'legalGateTitle', style: 'position:fixed;inset:0;z-index:10000;background:rgba(8,12,25,.88);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto' });
+  const panel = h('div', { style: 'width:min(100%,620px);max-height:90vh;overflow:auto;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 20px 70px #0008' });
+  panel.append(h('h1', { id: 'legalGateTitle', style: 'font-size:24px;margin:0 0 8px' }, 'ブロック工房をご利用になる前に'));
+  panel.append(h('p', { class: 'note' }, '安全に利用するため、以下の内容を確認してください。'));
+  const items = [
+    ['作品データはブラウザ内に保存されます。', 'ブラウザのデータ削除や端末変更で失われることがあるため、バックアップを推奨します。'],
+    ['外部通信を行うブロックがあります。', 'AI・Webhook・APIなどを使うと、入力内容が外部サービスへ送信される場合があります。'],
+    ['拡張スクリプトはJavaScriptを実行します。', '知らない人のコードや、内容を理解できないコードを登録しないでください。'],
+    ['APIキーやWebhook URLの扱いに注意してください。', '書き出したHTMLに秘密情報を含めると、受け取った人に見られる可能性があります。']
+  ];
+  items.forEach(x => panel.append(h('div', { class: 'item', style: 'margin:8px 0' }, h('span', { class: 'grow' }, h('div', { class: 't' }, x[0]), h('div', { class: 'd' }, x[1])))));
+  const links = h('div', { style: 'display:flex;flex-wrap:wrap;gap:12px;margin:14px 0' });
+  [['利用規約・プライバシーの説明', openLegal], ['GitHub', () => GenUINotUsed() ], ['Discordサポート', () => GenUINotUsed() ]].forEach((x, i) => {
+    if (i === 0) {
+      const b = h('button', { class: 'btn', type: 'button' }, x[0]);
+      b.onclick = () => { gate.remove(); openLegal(); showLegalGate(); };
+      links.append(b);
+    }
+  });
+  const repo = h('a', { href: 'https://github.com/yajuusennpai631-dotcom/Block-Workshop', target: '_blank', rel: 'noopener noreferrer' }, 'GitHub');
+  const discord = h('a', { href: 'https://discord.gg/sdEEAbeg8', target: '_blank', rel: 'noopener noreferrer' }, 'Discordサポート');
+  links.append(repo, discord);
+  panel.append(links);
+  const label = h('label', { style: 'display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-weight:600' });
+  const check = h('input', { type: 'checkbox', style: 'width:20px;height:20px;flex:none;margin-top:3px' });
+  label.append(check, h('span', null, '利用規約・注意事項・プライバシーに関する説明を確認し、同意します。'));
+  panel.append(label);
+  const start = h('button', { class: 'btn primary', type: 'button', disabled: true, style: 'width:100%;justify-content:center' }, '同意して利用を開始');
+  check.onchange = () => { start.disabled = !check.checked; };
+  start.onclick = () => {
+    if (!check.checked) return;
+    try { localStorage.setItem(LEGAL_KEY, '1'); } catch (e) {}
+    gate.remove();
+    boot();
+  };
+  panel.append(start);
+  gate.append(panel);
+  document.body.append(gate);
+}
+function hasLegalConsent() {
+  try { return localStorage.getItem(LEGAL_KEY) === '1'; } catch (e) { return false; }
 }
 
 /* ===== 実行・コード表示・画面切替 ===== */
@@ -2615,6 +2695,8 @@ const TEMPLATES = [
 
 /* ===== 起動 ===== */
 function boot() {
+  if (!hasLegalConsent()) { $('#app').hidden = true; showLegalGate(); return; }
+  $('#app').hidden = false;
   store = loadStore();
   if (!store) {
     const p = newProject('新しいアプリ');
