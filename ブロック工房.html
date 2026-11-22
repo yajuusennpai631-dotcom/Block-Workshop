@@ -2003,24 +2003,22 @@ function showLegalGate() {
   panel.append(h('h1', { id: 'legalGateTitle', style: 'font-size:24px;margin:0 0 8px' }, 'ブロック工房をご利用になる前に'));
   panel.append(h('p', { class: 'note' }, '安全に利用するため、以下の内容を確認してください。'));
   const items = [
-    ['作品データはブラウザ内に保存されます。', 'ブラウザのデータ削除や端末変更で失われることがあるため、バックアップを推奨します。'],
-    ['外部通信を行うブロックがあります。', 'AI・Webhook・APIなどを使うと、入力内容が外部サービスへ送信される場合があります。'],
-    ['拡張スクリプトはJavaScriptを実行します。', '知らない人のコードや、内容を理解できないコードを登録しないでください。'],
-    ['APIキーやWebhook URLの扱いに注意してください。', '書き出したHTMLに秘密情報を含めると、受け取った人に見られる可能性があります。']
+    ['1. 運営者・問い合わせ', '運営者は MakuMaku_ra です。お問い合わせはDiscordサポートサーバーで MakuMaku_ra 宛にお願いします。'],
+    ['2. 利用条件・禁止事項', '法令と第三者の権利を守り、自己の責任で利用してください。違法行為、権利侵害、不正アクセス、サービス妨害、マルウェアや詐欺目的の作品の作成・配布は禁止します。未成年の方は必要に応じて保護者に確認してください。'],
+    ['3. 作品データの保存', '作品データは利用中のブラウザのローカルストレージに保存されます。ブラウザのデータ削除、端末変更、プライベートブラウズの利用などで失われる場合があります。必要に応じてバックアップしてください。運営者による自動バックアップ機能はありません。'],
+    ['4. 外部サービス・通信', 'AI、Webhook、API、フォーム、通信などのブロックを使うと、入力内容や設定したURL・データが外部サービスへ送信される場合があります。送信先の利用規約・プライバシーポリシーを確認し、個人情報や秘密情報を不用意に入力しないでください。'],
+    ['5. APIキー・Webhook URL', 'APIキーやWebhook URLを作品に埋め込むと、書き出したHTMLを受け取った人に見られる可能性があります。秘密情報を含めた作品を公開・共有しないでください。'],
+    ['6. 拡張スクリプト', '拡張スクリプトはJavaScriptを実行します。内容を理解できないコードや信頼できない相手から受け取ったコードは登録しないでください。データの送信・変更などが起きる可能性があります。'],
+    ['7. プライバシー', 'サイトへのアクセス時には、ホスティング事業者のサーバーで通信に必要な情報やアクセスログが処理される場合があります。作品データはブラウザ内に保存され、運営者が作品データを閲覧できるクラウド保存機能は現在提供していません。外部サービスへ送信したデータは各サービスの方針に従って取り扱われます。'],
+    ['8. 免責・サービス変更', '作品の消失、外部サービスの停止・仕様変更、利用者間または第三者とのトラブルなどについて、法令上許される範囲で責任を負いません。サービスの内容は予告なく変更・停止される場合があります。必要に応じて本規約を変更し、重要な変更はサイト上で案内します。']
   ];
   items.forEach(x => panel.append(h('div', { class: 'item', style: 'margin:8px 0' }, h('span', { class: 'grow' }, h('div', { class: 't' }, x[0]), h('div', { class: 'd' }, x[1])))));
   const links = h('div', { style: 'display:flex;flex-wrap:wrap;gap:12px;margin:14px 0' });
-  [['利用規約・プライバシーの説明', openLegal], ['GitHub', () => GenUINotUsed() ], ['Discordサポート', () => GenUINotUsed() ]].forEach((x, i) => {
-    if (i === 0) {
-      const b = h('button', { class: 'btn', type: 'button' }, x[0]);
-      b.onclick = () => { gate.remove(); openLegal(); showLegalGate(); };
-      links.append(b);
-    }
-  });
-  const repo = h('a', { href: 'https://github.com/yajuusennpai631-dotcom/Block-Workshop', target: '_blank', rel: 'noopener noreferrer' }, 'GitHub');
-  const discord = h('a', { href: 'https://discord.gg/sdEEAbeg8', target: '_blank', rel: 'noopener noreferrer' }, 'Discordサポート');
+  const repo = h('a', { href: 'https://github.com/yajuusennpai631-dotcom/Block-Workshop', target: '_blank', rel: 'noopener noreferrer' }, 'GitHub リポジトリ');
+  const discord = h('a', { href: 'https://discord.gg/sdEEAbeg8', target: '_blank', rel: 'noopener noreferrer' }, 'Discord サポート');
   links.append(repo, discord);
   panel.append(links);
+  panel.append(h('p', { class: 'note' }, '制定日：2026年11月22日'));
   const label = h('label', { style: 'display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-weight:600' });
   const check = h('input', { type: 'checkbox', style: 'width:20px;height:20px;flex:none;margin-top:3px' });
   label.append(check, h('span', null, '利用規約・注意事項・プライバシーに関する説明を確認し、同意します。'));
