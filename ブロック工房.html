@@ -745,6 +745,7 @@ window.BlockKoubou = BK;
 /* ===== 作品データ ===== */
 const KEY = 'block-koubou-v1';
 const LEGAL_KEY = 'block-koubou-legal-v1';
+let legalAccepted = false;
 let mem = null;
 const PACKS = [
   { id: 'list', name: 'リスト', desc: '買い物リストのように、たくさんの値をまとめて扱う' },
@@ -2027,6 +2028,7 @@ function showLegalGate() {
   check.onchange = () => { start.disabled = !check.checked; };
   start.onclick = () => {
     if (!check.checked) return;
+    legalAccepted = true;
     try { localStorage.setItem(LEGAL_KEY, '1'); } catch (e) {}
     gate.remove();
     boot();
@@ -2036,6 +2038,7 @@ function showLegalGate() {
   document.body.append(gate);
 }
 function hasLegalConsent() {
+  if (legalAccepted) return true;
   try { return localStorage.getItem(LEGAL_KEY) === '1'; } catch (e) { return false; }
 }
 
@@ -2693,8 +2696,8 @@ const TEMPLATES = [
 
 /* ===== 起動 ===== */
 function boot() {
-  if (!hasLegalConsent()) { $('#app').hidden = true; showLegalGate(); return; }
-  $('#app').hidden = false;
+  if (!hasLegalConsent()) { $('#app').style.display = 'none'; showLegalGate(); return; }
+  $('#app').style.display = '';
   store = loadStore();
   if (!store) {
     const p = newProject('新しいアプリ');
